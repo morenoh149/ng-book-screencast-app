@@ -12,10 +12,10 @@ app.config(function($routeProvider) {
   .otherwise({ redirectTo: '/' });
 });
 
-app.controller('HomeController', function() {
+app.controller('HomeController', function($scope) {
 
 });
 
-app.controller('SettingsController', function() {
-
+app.controller('SettingsController', function($scope) {
+  $scope.name = 'harry';
 });
