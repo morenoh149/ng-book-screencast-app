@@ -1,6 +1,6 @@
 <div class="row">
   <h1>Update your settings</h1>
-  <form name="form">
+  <form name="form" ng-submit="updateSettings()">
     <fieldset>
       <legend>Update settings</legend>
 
@@ -32,22 +32,26 @@
         <div class="small-8 columns">
           <label>Email</label>
           <input type="email" placeholder="Email" name="email" ng-model="settings.email">
+          <div ng-show="form.email.$dirty && form.email.$invalid">
+            <span ng-show="form.email.$error.email">That is not a valid email</span>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="small-8 columns">
           <label>Age</label>
-          <input type="number" placeholder="Age" name="age" ng-model="settings.age">
+          <input type="number" placeholder="Age" name="age" ng-model="settings.age" min=3 max=120 >
+          <div ng-show="form.age.$dirty && form.age.$invalid">
+            <span ng-show="form.age.$error.min">You must be at least 3</span>
+            <span ng-show="form.age.$error.max">You're older than 120? really bro?</span>
         </div>
       </div>
       <div class="row">
         <div class="push-9 small-3">
-          <button type="submit" class="button">Update</button>
+          <button type="submit" class="button" ng-disabled="form.$pristine || (form.$dirty && form.$invalid)">Update</button>
         </div>
       </div>
 
     </fieldset>
   </form>
 </div>
-
-{{ settings }}
