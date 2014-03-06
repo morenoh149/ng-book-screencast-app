@@ -14,9 +14,12 @@ input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
 
 #emailListing {
   list-style: none;
+  margin-left: 0;
+  margin-bottom: 0;
 }
 .panel {
   margin-bottom: 0;
+  padding: 0.5rem;
 }
 .selected {
   background: #f5ffff;
