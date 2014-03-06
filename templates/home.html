@@ -1,1 +1,17 @@
-<h1>Home</h1>
+<div class="small-4 columns" ng-controller="MailListingController">
+  <h2>Sidebar</h2>
+  <ul id="emailListing">
+    <li ng-repeat="mail in email" ng-click="setSelectedMail(mail)">
+      <!-- ng-class evals the function and adds that class if true -->
+      <div class="row panel" ng-class="{selected: isSelected(mail)}">
+        <div class="small-8 columns">{{ mail.from }}</div>
+        <div class="small-12 columns">{{ mail.subject }}</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="small-8 columns" ng-controller="ContentController">
+  <h2>Content</h2>
+  {{ selectedMail }}
+</div>

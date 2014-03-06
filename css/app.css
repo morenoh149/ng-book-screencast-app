@@ -11,3 +11,13 @@
 .ng-invalid.ng-dirty { border: 1px solid red; }
 .ng-valid.ng-dirty { border: 1px solid green; }
 input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
+
+#emailListing {
+  list-style: none;
+}
+.panel {
+  margin-bottom: 0;
+}
+.selected {
+  background: #f5ffff;
+}
