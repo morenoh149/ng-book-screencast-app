@@ -4,7 +4,7 @@
     <li ng-repeat="mail in email" ng-click="setSelectedMail(mail)">
       <!-- ng-class evals the function and adds that class if true -->
       <div class="row panel" ng-class="{selected: isSelected(mail)}">
-        <div class="small-8 columns">{{ mail.from }}</div>
+        <div class="small-8 columns"><strong>subject:</strong></div>
         <div class="small-12 columns">{{ mail.subject }}</div>
       </div>
     </li>
@@ -17,11 +17,20 @@
   </div>
   <div ng-show="selectedMail">
     <div class="row header">
-      <div class="small-6 columns">{{ selectedMail.subject }}</div>
-      <div class="small-6 columns">{{ selectedMail.sent_at }}</div>
+      <div class="small-6 columns">
+        <strong>Subject:</strong>
+        {{ selectedMail.subject }}
+      </div>
+      <div class="small-6 columns">{{ selectedMail.sent_at | date:'MM/dd/yy' }}</div>
     </div>
     <div class="row actions">
-      <div class="small-8 columns">{{ selectedMail.from }} to {{ selectedMail.to }}</div>
+      <div class="small-8 columns">
+        <br />
+        <strong>From:</strong>
+        {{ selectedMail.from.join(", ") }}<br />
+        <strong>to</strong>
+        {{ selectedMail.to }}
+      </div>
       <a ng-click="showReply()" class="button radius push-1">Reply</a>
     </div>
     <div class="small-12 columns">
