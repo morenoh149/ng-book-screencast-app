@@ -6,7 +6,7 @@
   color: white;
 }
 
-.ng-pristine { border: 1px solid green; }
+//.ng-pristine { border: 1px solid green; }
 .ng-dirty { border: 1px solid yellow; }
 .ng-invalid.ng-dirty { border: 1px solid red; }
 .ng-valid.ng-dirty { border: 1px solid green; }
@@ -26,4 +26,10 @@ input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
 }
 .to-no-padding {
   padding: 0 0 0 5px;
+}
+textarea {
+  height: 10rem;
+}
+.contentArea {
+  padding-top: 1rem;
 }

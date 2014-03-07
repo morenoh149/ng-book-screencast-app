@@ -42,9 +42,14 @@ app.controller('MailListingController', ['$scope', '$http', function($scope, $ht
 
 app.controller('ContentController', ['$scope', function($scope) {
   $scope.showingReply = false;
+  $scope.reply = {};
 
   $scope.toggleReplyForm = function() {
+    $scope.reply = {}; //reset variable
     $scope.showingReply = !$scope.showingReply;
+    console.log($scope.selectedMail.from);
+    $scope.reply.to = $scope.selectedMail.from.join(", ");
+    $scope.reply.body = "\n\n -----------------\n\n" + $scope.selectedMail.body;
   };
 }]);
 
