@@ -24,3 +24,6 @@ input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
 .selected {
   background: #A5FFFF;
 }
+.to-no-padding {
+  padding: 0 0 0 5px;
+}

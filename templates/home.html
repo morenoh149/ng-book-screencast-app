@@ -16,6 +16,23 @@
     <h1>No email selected</h1>
   </div>
   <div ng-show="selectedMail">
+    <form id="replyForm" ng-submit="sendEmailReply()" ng-show="showingReply">
+      <div class="row collapse">
+        <div class="small-1 columns">
+          <span class="prefix">To</span>
+        </div>
+        <div class="small-11 columns">
+          <input ng-model="reply.to" type="email" placeholder="">
+        </div>
+
+        <div class="small-12 columns">
+          <textarea ng-model="reply.body">{{ reply.body }}</textarea>
+        </div>
+      </div>
+
+      <button class="button radius" ng-click="sendReply()">Send</button>
+      <button class="button radius alert" ng-click="toggleReplyForm()">Cancel</button>
+    </form>
     <div class="row header">
       <div class="small-6 columns">
         <strong>Subject:</strong>
@@ -28,13 +45,12 @@
         <br />
         <strong>From:</strong>
         {{ selectedMail.from.join(", ") }}<br />
-        <strong>to</strong>
+        <strong>To:</strong>
         {{ selectedMail.to }}
       </div>
-      <a ng-click="showReply()" class="button radius push-1">Reply</a>
+      <a ng-click="toggleReplyForm()" class="button radius push-1">Reply</a>
     </div>
-    <div class="small-12 columns">
-      {{ selectedMail.body }}
+    <div class="small-12 columns" ng-bind="selectedMail.body">
     </div>
   </div>
 </div>

@@ -40,9 +40,13 @@ app.controller('MailListingController', ['$scope', '$http', function($scope, $ht
   });
 }]);
 
-app.controller('ContentController', function($scope) {
+app.controller('ContentController', ['$scope', function($scope) {
+  $scope.showingReply = false;
 
-});
+  $scope.toggleReplyForm = function() {
+    $scope.showingReply = !$scope.showingReply;
+  };
+}]);
 
 app.controller('SettingsController', function($scope) {
   $scope.settings = {
