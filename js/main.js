@@ -66,7 +66,13 @@ app.directive('emailListing', function() {
       shouldUseGravatar: '@' // accept a string as a parameter
     },
     templateUrl: '/templates/emailListing.html',
-    controller: 
+    controller: ['$scope', '$element', '$attrs', '$transclude',
+      function($scope, $element, $attrs, $transclude) {
+        $scope.handleClick = function() {
+          $scope.action({selectedMail: $scope.email});
+        };
+      }
+    ]
   }
 });
 
