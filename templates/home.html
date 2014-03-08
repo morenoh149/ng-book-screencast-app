@@ -1,8 +1,10 @@
 <div class="small-4 columns sidebar" ng-controller="MailListingController">
-  <input type="number" placeholder="Filter by years" ng-model="nYearsAgo" id="searchbox" />
+  <input type="text" placeholder="Filter messages" ng-model="search" id="searchbox" />
   <ul id="emailListing">
     <!-- orderBy:arg:true set's reverse=true -->
-    <li email-listing email="mail" action="setSelectedMail(selectedMail)" ng-repeat="mail in ( email | orderBy:'sent_at':true | filter:searchPastNYears )">
+    <li email-listing class="panel" email="mail" gravatar-size="20" action="setSelectedMail(selectedMail)"
+        ng-repeat="mail in ( email | orderBy:'sent_at':true | filter:search )">
+        <!-- <h6>transclude text</h6> -->
     </li>
   </ul>
 </div>

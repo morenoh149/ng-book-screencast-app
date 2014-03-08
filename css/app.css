@@ -17,6 +17,9 @@ input.ng-invalid-minlength.ng-dirty { border: 1px solid blue; }
   margin-left: 0;
   margin-bottom: 0;
 }
+.panel:hover {
+  background-color: #ccc;
+}
 .panel {
   margin-bottom: 0;
   padding: 0.5rem;

@@ -1,5 +1,4 @@
 var app = angular.module("myApp", ['ngRoute']);
-
 app.config(function($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: "templates/home.html",
@@ -57,14 +56,18 @@ app.controller('HomeController', function($scope) {
 
 // directive that builds the email listing
 app.directive('emailListing', function() {
+  var url = "http://www.gravatar.com/avatar/";
   return {
     restrict: 'EA', // E- element A- attribute C- class M- comment
     replace: false, // whether angular should replace the element or append
     scope: { // may be true/false or hash. if a hash we create an 'isolate' scope
       email: '=', // accept an object as parameter
       action: '&', // accept a function as a parameter
-      shouldUseGravatar: '@' // accept a string as a parameter
+      isSelected: '&',
+      shouldUseGravatar: '@', // accept a string as a parameter
+      gravatarSize: '@'
     },
+    transclude: false,
     templateUrl: '/templates/emailListing.html',
     controller: ['$scope', '$element', '$attrs', '$transclude',
       function($scope, $element, $attrs, $transclude) {
@@ -72,8 +75,22 @@ app.directive('emailListing', function() {
           $scope.action({selectedMail: $scope.email});
         };
       }
-    ]
-  }
+    ],
+    // if you had a compile section here, link: wont run
+    link: function(scope, iElement, iAttrs, controller) {
+      var size = iAttrs.gravatarSize || 80;
+
+      scope.$watch('gravatarImage', function() {
+        var hash = md5(scope.email.from[0]);
+        scope.gravatarImage = url + hash + '?s=' + size;
+      });
+
+      iElement.bind('click', function() {
+        iElement.parent().children().removeClass('selected');
+        iElement.addClass('selected');
+      });
+    }
+  };
 });
 
 app.controller('MailListingController', ['$scope', 'mailService', function($scope, mailService) {
