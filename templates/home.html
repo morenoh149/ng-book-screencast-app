@@ -1,12 +1,8 @@
-<div class="small-4 columns" ng-controller="MailListingController">
-  <h2>Sidebar</h2>
+<div class="small-4 columns sidebar" ng-controller="MailListingController">
+  <input type="number" placeholder="Filter by years" ng-model="nYearsAgo" id="searchbox" />
   <ul id="emailListing">
-    <li ng-repeat="mail in email" ng-click="setSelectedMail(mail)">
-      <!-- ng-class evals the function and adds that class if true -->
-      <div class="row panel" ng-class="{selected: isSelected(mail)}">
-        <div class="small-8 columns"><strong>subject:</strong></div>
-        <div class="small-12 columns">{{ mail.subject }}</div>
-      </div>
+    <!-- orderBy:arg:true set's reverse=true -->
+    <li email-listing email="mail" action="setSelectedMail(selectedMail)" ng-repeat="mail in ( email | orderBy:'sent_at':true | filter:searchPastNYears )">
     </li>
   </ul>
 </div>

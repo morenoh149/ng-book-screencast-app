@@ -12,6 +12,35 @@ app.config(function($routeProvider) {
   .otherwise({ redirectTo: '/' });
 });
 
+//services must return objects
+app.service('mailService', ['$http', '$q', function($http, $q) {
+  var getMail = function() {
+    return $http({
+            method: 'GET',
+            url: '/api/mail'
+          });
+  };
+
+  var sendEmail = function(mail) {
+    var d = $q.defer();
+    $http({
+      method: 'POST',
+      data: 'mail',
+      url: '/api/send'
+    }).success(function(data, status, headers) {
+      d.resolve(data);
+    }).error(function(data, status, headers) {
+      d.reject(data);
+    });
+    return d.promise;
+  };
+
+  return {
+    getMail: getMail,
+    sendEmail: sendEmail
+  };
+}]);
+
 app.controller('HomeController', function($scope) {
   $scope.selectedMail;
 
@@ -26,21 +55,42 @@ app.controller('HomeController', function($scope) {
   };
 });
 
-app.controller('MailListingController', ['$scope', '$http', function($scope, $http) {
-  $scope.email = [];
+// directive that builds the email listing
+app.directive('emailListing', function() {
+  return {
+    restrict: 'EA', // E- element A- attribute C- class M- comment
+    replace: false, // whether angular should replace the element or append
+    scope: { // may be true/false or hash. if a hash we create an 'isolate' scope
+      email: '=', // accept an object as parameter
+      action: '&', // accept a function as a parameter
+      shouldUseGravatar: '@' // accept a string as a parameter
+    },
+    templateUrl: '/templates/emailListing.html',
+    controller: 
+  }
+});
 
-  $http({
-    method: 'GET',
-    url: '/api/mail'
-  })
+app.controller('MailListingController', ['$scope', 'mailService', function($scope, mailService) {
+  $scope.email = [];
+  $scope.nYearsAgo = 10;
+
+  mailService.getMail()
   .success(function(data, status, headers) {
     $scope.email = data.all;
   })
   .error(function(data, status, headers) {
   });
+
+  $scope.searchPastNYears = function(email) {
+    var emailSentAtDate = new Date(email.sent_at),
+        nYearsAgoDate = new Date();
+
+    nYearsAgoDate.setFullYear(nYearsAgoDate.getFullYear() - $scope.nYearsAgo);
+    return emailSentAtDate > nYearsAgoDate;
+  };
 }]);
 
-app.controller('ContentController', ['$scope', function($scope) {
+app.controller('ContentController', ['$scope', 'mailService', '$rootScope', function($scope, mailService, $rootScope) {
   $scope.showingReply = false;
   $scope.reply = {};
 
@@ -51,6 +101,22 @@ app.controller('ContentController', ['$scope', function($scope) {
     $scope.reply.to = $scope.selectedMail.from.join(", ");
     $scope.reply.body = "\n\n -----------------\n\n" + $scope.selectedMail.body;
   };
+
+  $scope.sendReply = function() {
+    $scope.showingReply = false;
+    $rootScope.loading = true;
+    mailService.sendEmail($scope.reply)
+    .then(function(status) {
+      $rootScope.loading = false;
+    }, function(err) {
+      $rootScope.loading = false;
+    });
+  }
+
+  $scope.$watch('selectedMail', function(evt) {
+    $scope.showingReply = false;
+    $scope.reply = {};
+  });
 }]);
 
 app.controller('SettingsController', function($scope) {

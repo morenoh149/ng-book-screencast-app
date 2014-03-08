@@ -33,3 +33,9 @@ textarea {
 .contentArea {
   padding-top: 1rem;
 }
+.sidebar {
+  padding-left: 0;
+}
+#searchbox {
+  margin-bottom: 0;
+}
