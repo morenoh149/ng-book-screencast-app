@@ -1,4 +1,4 @@
-<div class="emailListing panel" ng-click="handleClick()">
+<div class="emailListing panel" ng-click="handleClick()" ng-class="{selected: isSelected(email)}">
   <span class="fromLine"><b>{{ email.from.join(", ") }}</b> to <b>{{ email.to }}</b></span>
   <span class="subject">{{ email.subject }}</span>
 </div>
