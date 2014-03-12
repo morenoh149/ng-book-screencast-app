@@ -1,4 +1,5 @@
-var app = angular.module("myApp", ['ngRoute']);
+var app = angular.module("myApp", ['ngRoute', 'firebase']);
+
 app.config(function($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: "templates/home.html",
@@ -12,30 +13,21 @@ app.config(function($routeProvider) {
 });
 
 //services must return objects
-app.service('mailService', ['$http', '$q', function($http, $q) {
-  var getMail = function() {
-    return $http({
-            method: 'GET',
-            url: '/api/mail'
-          });
+app.service('mailService', ['$http', '$firebase', function($http, $firebase) {
+  var emailRef = new Firebase("https://ng-book-email-client.firebaseio.com/all");
+  var emails = $firebase(emailRef);
+
+  // uses firebase to bind $scope.email to the firebase mail object
+  var setEmails = function(scope, localScopeVarName) {
+    return emails.$bind(scope, localScopeVarName);
   };
 
   var sendEmail = function(mail) {
-    var d = $q.defer();
-    $http({
-      method: 'POST',
-      data: 'mail',
-      url: '/api/send'
-    }).success(function(data, status, headers) {
-      d.resolve(data);
-    }).error(function(data, status, headers) {
-      d.reject(data);
-    });
-    return d.promise;
+    return $scope.email.$add(mail);
   };
 
   return {
-    getMail: getMail,
+    setEmails: setEmails,
     sendEmail: sendEmail
   };
 }]);
@@ -94,15 +86,8 @@ app.directive('emailListing', function() {
 });
 
 app.controller('MailListingController', ['$scope', 'mailService', function($scope, mailService) {
-  $scope.email = [];
+  mailService.setEmails($scope, 'emails');
   $scope.nYearsAgo = 10;
-
-  mailService.getMail()
-  .success(function(data, status, headers) {
-    $scope.email = data.all;
-  })
-  .error(function(data, status, headers) {
-  });
 
   $scope.searchPastNYears = function(email) {
     var emailSentAtDate = new Date(email.sent_at),

@@ -3,7 +3,7 @@
   <ul id="emailListing">
     <!-- orderBy:arg:true set's reverse=true -->
     <li email-listing class="panel" email="mail" gravatar-size="20" action="setSelectedMail(selectedMail)"
-        ng-repeat="mail in ( email | orderBy:'sent_at':true | filter:search )">
+        ng-repeat="mail in ( emails | orderBy:'sent_at':true | filter:search )">
         <!-- <h6>transclude text</h6> -->
     </li>
   </ul>
